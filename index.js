@@ -50,7 +50,7 @@ http.createServer(function (req, res) {
                 res.write('<form action="/edit" method="GET" style="display:inline-block">');
                 res.write(`<input type="hidden" name="system" value="${system}"/>`);
                 res.write(`<input type="hidden" name="index" value="${index}"/>`);
-                res.write('<button type="submit" title="Edit" style="background:transparent;border:none;cursor:pointer;padding:0"><i class="fas fa-edit text-primary"></i></button>');
+                res.write('<button type="submit" title="Edit" style="background:transparent;border:none;cursor:pointer;padding:0;padding-right:5px"><i class="fas fa-pencil-alt text-primary"></i></button>');
                 res.write('</form>');
 
                 // delete button
@@ -69,16 +69,23 @@ http.createServer(function (req, res) {
             res.write('<div class="btn-group">');
             res.write('<a href="/" class="btn btn-outline-primary">Home</a>');
             res.write(`<a href="/reset?system=${system}&redirect=true" class="btn btn-outline-danger">Reset to Default</a>`);
-            res.write('</div></div></div></div>');
+            res.write('</div>');
+            res.write('<div class="btn-group" style="margin-left: 10px;">');
+            res.write(`<form action="/create" method="GET">`);
+            res.write(`<input type="hidden" name="system" value="${system}"/>`);
+            res.write(`<button type="submit" class="btn btn-primary">Create Message</button>`);
+            res.write('</form>');
+            res.write('</div>');
+            res.write('</div></div></div>');
             res.write("</body></html>");
             break;
         case "/sep":
             var system = "sep";
-            res.write('<!DOCTYPE html><html><head><style>body {padding:10px;}</style><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"><script src="https://kit.fontawesome.com/500da070c3.js" crossorigin="anonymous"></script></head><body>');
+            res.write('<!DOCTYPE html><html><head><style>body {padding:10px;}</style><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"><script src="https://kit.fontawesome.com/500da070c3.js" crossorigin="anonymous"></script></head><body>')
             var messages = getMessages(system);
 
             res.write('<div class="card"><div class="card-body">');
-            res.write('<h1 class="card-title">SEP Messages</h1>');
+            res.write('<h1 class="card-title">EBN Messages</h1>');
             res.write('<div class="table-responsive"><table class="table">');
             res.write('<thead><tr>');
             res.write('<th scope="col">#</th>');
@@ -101,13 +108,13 @@ http.createServer(function (req, res) {
                 res.write(`<td>${value.appearTime}</td>`);
                 res.write(`<td>${value.expireDate}</td>`);
                 res.write(`<td>${value.expireTime}</td>`);
-                res.write('<td>');
+                res.write('<td style="min-width:30px;">');
 
                 // edit button
                 res.write('<form action="/edit" method="GET" style="display:inline-block">');
                 res.write(`<input type="hidden" name="system" value="${system}"/>`);
                 res.write(`<input type="hidden" name="index" value="${index}"/>`);
-                res.write('<button type="submit" title="Edit" style="background:transparent;border:none;cursor:pointer;padding:0"><i class="fas fa-edit text-primary"></i></button>');
+                res.write('<button type="submit" title="Edit" style="background:transparent;border:none;cursor:pointer;padding:0;padding-right:5px"><i class="fas fa-pencil-alt text-primary"></i></button>');
                 res.write('</form>');
 
                 // delete button
@@ -126,7 +133,14 @@ http.createServer(function (req, res) {
             res.write('<div class="btn-group">');
             res.write('<a href="/" class="btn btn-outline-primary">Home</a>');
             res.write(`<a href="/reset?system=${system}&redirect=true" class="btn btn-outline-danger">Reset to Default</a>`);
-            res.write('</div></div></div></div>');
+            res.write('</div>');
+            res.write('<div class="btn-group" style="margin-left: 10px;">');
+            res.write(`<form action="/create" method="GET">`);
+            res.write(`<input type="hidden" name="system" value="${system}"/>`);
+            res.write(`<button type="submit" class="btn btn-primary">Create Message</button>`);
+            res.write('</form>');
+            res.write('</div>');
+            res.write('</div></div></div>');
             res.write("</body></html>");
             break;
         case "/edit":
@@ -187,13 +201,67 @@ http.createServer(function (req, res) {
             res.write('</div></div>');
             res.write('</body></html>');
             break;
+        case "/create":
+            var qdata = q.query;
+            var system = qdata.system;
+            var messages = getMessages(system);
+            res.write('<!DOCTYPE html><html><head><style>body {padding:10px;}</style><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"><script src="https://kit.fontawesome.com/500da070c3.js" crossorigin="anonymous"></script></head><body>');
+            res.write(`<div class="card"><div class="card-body">`);
+            res.write('<h1 class="card-title">Create New</h1>');
+            res.write('<form action="/save" method="GET" id="create-form">');
+            // label
+            res.write('<div class="form-group">');
+            res.write('<label for="labelInput">Label</label>');
+            res.write(`<input type="text" class="form-control" id="labelInput" name="label" required>`);
+            res.write('</div>');
+
+            // copy
+            res.write('<div class="form-group">');
+            res.write('<label for="copyInput">Copy</label>');
+            res.write(`<textarea class="form-control" id="copyInput" name="copy" required></textarea>`);
+            res.write('</div>');
+
+            // appear date
+            res.write('<div class="form-group">');
+            res.write('<label for="appearDateInput">Appear Date</label>');
+            res.write(`<input type="date" class="form-control" id="appearDateInput" name="appearDate" required>`);
+            res.write('</div>');
+
+            // appear time
+            res.write('<div class="form-group">');
+            res.write('<label for="appearTimeInput">Appear Time</label>');
+            res.write(`<input type="time" step="1" class="form-control" id="appearTimeInput" name="appearTime" required>`);
+            res.write('</div>');
+
+            // expire date
+            res.write('<div class="form-group">');
+            res.write('<label for="expireDateInput">Expire Date</label>');
+            res.write(`<input type="date" class="form-control" id="expireDateInput" name="expireDate" required>`);
+            res.write('</div>');
+
+            // expire time
+            res.write('<div class="form-group">');
+            res.write('<label for="expireTimeInput">Expire Time</label>');
+            res.write(`<input type="time" step="1" class="form-control" id="expireTimeInput" name="expireTime" required>`);
+            res.write('</div>');
+
+            res.write(`<input type="hidden" name="system" value="${system}"/>`);
+
+            res.write('</form>');
+
+            res.write('<div class="btn-group">');
+            res.write(`<a href="/${system}" class="btn btn-outline-secondary">Cancel</a>`);
+            res.write(`<button href="/save" class="btn btn-outline-primary" type="submit" form="create-form">Save</button>`);
+            res.write('</div>');
+
+            res.write('</div></div>');
+            res.write('</body></html>');
+            break;
         case "/save":
             var qdata = q.query;
             var system = qdata.system;
-            var index = qdata.index;
             var message = {};
             message.system = qdata.system;
-            message.index = qdata.index;
             message.label = qdata.label;
             message.copy = qdata.copy;
             message.appearDate = qdata.appearDate;
@@ -209,21 +277,36 @@ http.createServer(function (req, res) {
             var oldMessages = getMessages(system);
             var newMessages = [];
             
-            oldMessages.forEach(function(value, index, array) {
-                if (value.index != message.index) {
-                    newMessages.push(value);
-                } else {
-                    var v = value;
-                    v.system = message.system;
-                    v.label = message.label;
-                    v.copy = message.copy;
-                    v.appearDate = message.appearDate;
-                    v.appearTime = message.appearTime;
-                    v.expireDate = message.expireDate;
-                    v.expireTime = message.expireTime;
-                    newMessages.push(v);
-                }
-            });
+            if (qdata.index !== undefined) {
+                message.index = qdata.index;
+                oldMessages.forEach(function(value, index, array) {
+                    if (value.index != message.index) {
+                        newMessages.push(value);
+                    } else {
+                        var v = value;
+                        v.system = message.system;
+                        v.label = message.label;
+                        v.copy = message.copy;
+                        v.appearDate = message.appearDate;
+                        v.appearTime = message.appearTime;
+                        v.expireDate = message.expireDate;
+                        v.expireTime = message.expireTime;
+                        newMessages.push(v);
+                    }
+                });
+            } else {
+                newMessages = oldMessages;
+                var v = {};
+                v.system = message.system;
+                v.label = message.label;
+                v.copy = message.copy;
+                v.appearDate = message.appearDate;
+                v.appearTime = message.appearTime;
+                v.expireDate = message.expireDate;
+                v.expireTime = message.expireTime;
+                newMessages.push(v);
+            }
+            
             writeXML(system, newMessages);
             res.writeHead(302, {Location: `/${system}`});
             break;
