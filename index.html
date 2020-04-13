@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Banner Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card"><div class="card-body">
+            <h1 class="card-title">Select a System:</h1>
+            <a href="/ebn" class="btn btn-primary">EBN</a>
+            <a href="/sep" class="btn btn-primary">SEP</a>
+        </div></div>
+        <hr>
+        <h2>Debugging Tools</h2>
+        <div class="row">
+            <div class="column-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Reset System to Default</h3>
+                        <form action="/reset" method="get">
+                            <select name="system">
+                                <option value="ebn">EBN</option>
+                                <option value="sep">SEP</option>
+                                <option value="both">Both</option>
+                            </select>
+                            <button class="btn btn-primary" type="submit">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
